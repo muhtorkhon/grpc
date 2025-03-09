@@ -1,0 +1,52 @@
+syntax = "proto3";
+package erp;
+option go_package = "./proto";
+
+service EducationService {
+  // 1. Unary RPC: Yangi o‘quvchi qo‘shish
+  rpc AddStudent (StudentRequest) returns (StudentResponse);
+
+  // 2. Server Streaming RPC: Kurslar ro‘yxatini olish
+  rpc ListCourses (CoursesRequest) returns (stream CourseResponse);
+
+  // 3. Client Streaming RPC: To‘lovlarni yuborish
+  rpc SubmitPayments (stream PaymentRequest) returns (PaymentResponse);
+
+  // 4. Bidirectional Streaming RPC: Chat xizmati
+  rpc Chat (stream ChatMessage) returns (stream ChatMessage);
+}
+
+// O‘quvchi qo‘shish uchun
+message StudentRequest {
+  string name = 1;
+  int32 age = 2;
+  string course_id = 3;
+}
+message StudentResponse {
+  string student_id = 1;
+  string message = 2;
+}
+
+// Kurslar ro‘yxati uchun
+message CoursesRequest {}
+message CourseResponse {
+  string course_id = 1;
+  string name = 2;
+  string teacher = 3;
+}
+
+// To‘lovlar uchun
+message PaymentRequest {
+  string student_id = 1;
+  float amount = 2;
+}
+message PaymentResponse {
+  string message = 1;
+  float total_amount = 2;
+}
+
+// Chat uchun
+message ChatMessage {
+  string sender = 1;
+  string content = 2;
+}
